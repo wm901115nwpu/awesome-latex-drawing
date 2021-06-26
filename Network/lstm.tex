@@ -1,0 +1,149 @@
+%cite by https://tex.stackexchange.com/questions/432312/how-do-i-draw-an-lstm-cell-in-tikz
+
+\documentclass[tikz,border=10pt]{standalone}
+% 使用宏包：bm用于加粗数学符号，ctex用于中文支持，xcolor用于配色
+\usepackage{bm,xeCJK,xcolor}
+% 使用TikZ内部的扩展包：calc计算两点间等分点，arrows.meta用于定制箭头样式，shapes用于椭圆的生成
+\usetikzlibrary{calc, positioning, arrows.meta, shapes}
+
+
+% 定义新命令 \vars{var1}{var2}用于符号的定制
+\newcommand{\vars}[2]{${\bm#1}_{\bm#2}$}
+
+\begin{document}
+
+\begin{tikzpicture}[
+    % 定义样式
+    myfont/.style={
+        font=\footnotesize\sffamily
+    },
+    frame/.style={% 外部边框(圆角矩形)的样式
+        rectangle,
+        rounded corners=5mm,
+        draw,gray,
+        fill=lime!45,
+        very thick,
+    },
+    add/.style={% 加操作符的样式
+        circle,
+        draw, thick,
+        fill=yellow!60,
+        inner sep=.5pt,
+        minimum height =3mm,
+    },
+    prod/.style={% 乘操作符的样式
+        circle,
+        draw, thick,
+        fill=lightgray!40!blue!30,
+        inner sep=.5pt,
+        minimum height =3mm,
+    },
+    function/.style={% 信息处理函数(tanh)的样式
+        ellipse,
+        draw, thick,
+        fill=cyan!30,
+        inner sep=1pt
+    },
+    cell/.style={%C_t和C_{t-1}的样式
+        circle,draw,fill=magenta!30,
+        line width = .75pt,
+        minimum width=8mm,
+        inner sep=1pt,
+    },
+    hidden/.style={% h_t和h_{t-1}的样式
+        circle,draw,fill=orange!50,
+        line width = .75pt,
+        minimum width=8mm,
+        inner sep=1pt,
+    },
+    input/.style={% x_t的样式
+        circle,draw,
+        fill=teal!30,
+        line width = .75pt,
+        minimum width=8mm,
+        inner sep=1pt,
+    },
+    actfunc/.style={% 激活函数的样式
+        rectangle, draw,
+        fill=pink!30,
+        minimum width=4.25mm,
+        minimum height=3.75mm,
+        inner sep=1pt,
+        thick,
+    },
+    ArrowC1/.style={% 线段的圆角样式
+        rounded corners=2mm,
+        >=Stealth[round],
+        very thick,
+    },
+    ArrowC2/.style={% 弧度略大的圆角样式
+        rounded corners=3mm,
+        >=Stealth[round],
+        very thick,
+    },
+]
+
+
+% 图形绘制部分
+    % 绘制外部圆角边框
+    \node [frame, minimum height =4cm, minimum width=6cm] at (0,0) {};
+
+    % 绘制激活函数结点
+    \node [actfunc] (ibox1) at (-2,-0.8) {$\bm\sigma$};
+    \node [actfunc] (ibox2) at (-1.35,-0.8) {$\bm\sigma$};
+    \node [actfunc, minimum width=9mm] (ibox3) at (-0.45,-0.8) {$\bm\tanh$};
+    \node [actfunc] (ibox4) at (0.5,-0.8) {$\bm\sigma$};
+
+   % 绘制操作符结点
+    \node [prod] (mux1) at (-2,1.5) {$\bm\times$};
+    \node [add] (add1) at (-0.5,1.5) {$\bm+$};
+    \node [prod] (mux2) at (-0.5,0) {$\bm\times$};
+    \node [prod] (mux3) at (1.5,0) {$\bm\times$};
+    \node [function] (func1) at (1.5,0.75) {$\bm\tanh$};
+
+    % 绘制神经元外部输入节点
+    \node[cell, label={[myfont]above:长时记忆输入}] (c) at (-4,1.5) {\vars{c}{t-1}};
+    \node[hidden, label={[myfont]above:隐层输入}] (h) at (-4,-1.5) {\vars{h}{t-1}};
+    \node[input, label={[myfont]right:输入}] (x) at (-2.5,-3) {\vars{x}{t}};
+
+    % 绘制神经元外部输出节点
+    \node[cell, label={[myfont]above:长时记忆输出}] (c2) at (4,1.5) {\vars{c}{t}};
+    \node[hidden, label={[myfont]below:短时记忆输出}] (h2) at (4,-1.5) {\vars{h}{t}};
+    \node[hidden, label={[myfont]left:输出}] (x2) at (2.5,3) {\vars{h}{t}};
+
+% 绘制各节点之间的连接线
+    % 使用相交和位移
+    % 绘制C_{t-1}到C_t的线
+    \draw [->, ArrowC1] (c) -- (mux1) -- (add1) -- (c2);
+
+    % 绘制输入线段
+    \draw [ArrowC2] (h) -| (ibox4);
+    \draw [ArrowC1] (h) -| (ibox1);
+    \draw [ArrowC1] (h) -| (ibox2);
+    \draw [ArrowC1] (h) -| (ibox3);
+    \draw [ArrowC1] (x) -- (x |- h) -| (ibox1);
+
+    % 内部线段(带箭头)
+    \draw [->, ArrowC2] (ibox1) -- (mux1);
+    \node [label=left:$\bm{f_t}$,right=1.5pt] () at ($(ibox1)!.5!(mux1)$) {};
+    \draw [->, ArrowC2] (ibox2) |- (mux2);
+    \node [label=left:$\bm{i_t}$, right=2pt] () at (ibox2 |- mux2) {};
+    \draw [->, ArrowC2] (ibox3) -- (mux2);
+    \node [label=right:$\bm{\tilde{C}_t}$, left=.5pt] () at ($(ibox3)!.5!(mux2)$) {};
+    \draw [->, ArrowC2] (ibox4) |- (mux3);
+    \node [label=left:$\bm{o_t}$, right=2pt] () at (ibox4 |- mux3) {};
+    \draw [->, ArrowC2] (mux2) -- (add1);
+    \draw [->, ArrowC1] (add1) -| (func1);
+    \draw [->, ArrowC2] (func1) -- (mux3);
+
+    %输出线段
+    \draw [->, ArrowC2] (mux3) |- (h2);
+    %标记出现缺口线段的下端点
+    \draw (c2 -| x2) ++(0,-0.15) coordinate (i1);
+    \draw [-, ArrowC2] (h2 -| x2) -| (i1);
+    \draw [->, ArrowC2] (i1)++(0,0.3) -- (x2);
+
+
+
+\end{tikzpicture}
+\end{document}

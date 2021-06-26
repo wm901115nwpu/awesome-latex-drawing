@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{DeepLearningbook}
+I.~Goodfellow, Y.~Bengio, and A.~Courville.
+\newblock {\em Deep Learning}.
+\newblock MIT Press, 2017.
+
+\bibitem{xiao2017/online}
+H.~Xiao, K.~Rasul, and R.~Vollgraf.
+\newblock Fashion-mnist: a novel image dataset for benchmarking machine
+  learning algorithms, 2017.
+
+\end{thebibliography}

@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: /Users/wangmeng/MyProject/awesome-latex-drawing/Network/NeuralNetworks/main.aux
+The style file: abbrv.bst
+Database file #1: my_references.bib
+Warning--entry type for "xiao2017/online" isn't style-file defined
+--line 10 of file my_references.bib
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            506 strings with 4103 characters,
+and the built_in function-call counts, 566 in all, are:
+= -- 46
+> -- 36
+< -- 0
++ -- 14
+- -- 12
+* -- 34
+:= -- 103
+add.period$ -- 5
+call.type$ -- 2
+change.case$ -- 11
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 19
+empty$ -- 45
+format.name$ -- 12
+if$ -- 114
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 2
+newline$ -- 12
+num.names$ -- 4
+pop$ -- 21
+preamble$ -- 1
+purify$ -- 10
+quote$ -- 0
+skip$ -- 14
+stack$ -- 0
+substring$ -- 10
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 6
+warning$ -- 0
+while$ -- 4
+width$ -- 3
+write$ -- 20
+(There was 1 warning)
